@@ -10,7 +10,7 @@ const app = express();
 /* ================= MIDDLEWARE ================= */
 app.use(cors({
   origin: [
-    "http://localhost:5500",
+    " https://ai-scam-analyzer.onrender.com/analyze ",
     "https://ghostnet-pro.web.app"
   ]
 }));

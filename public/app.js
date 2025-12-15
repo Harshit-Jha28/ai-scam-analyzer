@@ -170,7 +170,9 @@ if (analyzeBtn) {
       : `You are a cybersecurity fraud detection expert. The message may be in any Indian language. Return ONLY valid minified JSON: {"probability": number, "type": "OTP Scam | UPI Scam | Job Scam | Lottery Scam | Phishing | Safe | Other", "explanation": "short explanation in English", "detectedLanguage": "language name"} Message: "${txt}"`;
 
     try {
-      const res = await fetch("http://localhost:5000/analyze", {
+      const BACKEND_URL = "https://ai-scam-analyzer.onrender.com";
+
+      const res = await fetch(`${BACKEND_URL}/analyze`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
