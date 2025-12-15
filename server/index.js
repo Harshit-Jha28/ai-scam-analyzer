@@ -10,8 +10,8 @@ const app = express();
 /* ================= MIDDLEWARE ================= */
 app.use(cors({
   origin: [
-    " https://ai-scam-analyzer.onrender.com/analyze ",
-    "https://ghostnet-pro.web.app"
+    "https://ghostnet-pro.web.app",
+    "http://localhost:5500" // optional
   ]
 }));
 
@@ -19,7 +19,6 @@ app.use(express.json({ limit: "1mb" }));
 
 /* ================= ENV ================= */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
 console.log("🔑 GEMINI_API_KEY loaded:", !!GEMINI_API_KEY);
 
 /* ================= HEALTH CHECK ================= */

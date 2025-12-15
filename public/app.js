@@ -88,10 +88,7 @@ onAuthStateChanged(auth, (user) => {
 
     if (loginBtn) loginBtn.style.display = "none";
     if (logoutBtn) logoutBtn.style.display = "inline";
-    if (unsubscribeHistory) {
-      unsubscribeHistory();
-      unsubscribeHistory = null;
-    }
+
 
 
     startRealtimeHistory();
@@ -174,13 +171,17 @@ if (analyzeBtn) {
 
       const res = await fetch(`${BACKEND_URL}/analyze`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt })
       });
 
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Backend error");
+      }
+
       const data = await res.json();
+
       const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
       const cleaned = aiText.replace(/```json|```/g, "").trim();
 
