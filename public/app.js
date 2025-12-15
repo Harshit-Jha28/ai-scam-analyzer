@@ -20,7 +20,6 @@ import {
 
 /* ================= FIREBASE ================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyCe41LBbohagUPC47BmIeCWQQpkJXpT1Ik",
   authDomain: "ghostnet-pro.firebaseapp.com",
   projectId: "ghostnet-pro",
   storageBucket: "ghostnet-pro.appspot.com",
@@ -89,6 +88,11 @@ onAuthStateChanged(auth, (user) => {
 
     if (loginBtn) loginBtn.style.display = "none";
     if (logoutBtn) logoutBtn.style.display = "inline";
+    if (unsubscribeHistory) {
+      unsubscribeHistory();
+      unsubscribeHistory = null;
+    }
+
 
     startRealtimeHistory();
   } else {
@@ -178,7 +182,10 @@ if (analyzeBtn) {
       const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
       const cleaned = aiText.replace(/```json|```/g, "").trim();
 
-      if (!cleaned.startsWith("{")) throw new Error("Invalid AI Response");
+      if (!cleaned.startsWith("{") || !cleaned.endsWith("}")) {
+        throw new Error("Invalid AI Response");
+      }
+
 
       let parsed = JSON.parse(cleaned);
       if (parsed.probability <= 1) parsed.probability = Math.round(parsed.probability * 100);
