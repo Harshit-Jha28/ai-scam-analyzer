@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>GhostNet Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ✅ External CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="navbar">
+      <div class="nav-left">
+        <div class="logo">GhostNet Pro</div>
+        <div class="tagline">AI Scam Detection</div>
+      </div>
+
+      <div class="nav-right">
+        <span id="user-info" class="user-info">Not signed in</span>
+
+        <button id="theme-toggle" class="ghost-btn">🌙</button>
+        <button id="login-btn" class="ghost-btn">Sign in with Google</button>
+        <button id="logout-btn" class="ghost-btn" style="display:none;">Logout</button>
+      </div>
+    </div>
+
+
+
+    <!-- ===== MAIN PANEL ===== -->
+    <div class="main">
+
+      <!-- INPUT -->
+      <div>
+        <div class="section-title">Scam Analyzer</div>
+        <textarea id="message-input"
+          placeholder="Paste suspicious WhatsApp / SMS / Job / UPI message or Website URL here..."></textarea>
+        <br />
+        <button id="analyze-btn" class="primary-btn">Analyze Threat</button>
+        <div id="error"></div>
+      </div>
+
+      <!-- RESULT -->
+      <div>
+        <div class="section-title">AI Verdict</div>
+        <div id="result-box">
+          <span class="placeholder">No analysis yet.</span>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div>
+        <div class="section-title">Live Scan History</div>
+        <div id="history">No scans yet.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    All credits &copy; Harshit Jha 2025
+  </footer>
+
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+
+</html>

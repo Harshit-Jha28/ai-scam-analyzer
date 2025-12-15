@@ -1,0 +1,24 @@
+# ===== ENVIRONMENT VARIABLES =====
+.env
+server/.env
+
+# ===== NODE =====
+node_modules/
+server/node_modules/
+
+# ===== FIREBASE =====
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== EDITORS =====
+.vscode/
+.idea/
+
+# ===== BUILD =====
+dist/
+build/
