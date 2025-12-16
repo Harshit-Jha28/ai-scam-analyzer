@@ -20,6 +20,7 @@ import {
 
 /* ================= FIREBASE ================= */
 const firebaseConfig = {
+  apiKey: "AIzaSyCe41LBbohagUPC47BmIeCWQQpkJXpT1Ik",
   authDomain: "ghostnet-pro.firebaseapp.com",
   projectId: "ghostnet-pro",
   storageBucket: "ghostnet-pro.appspot.com",
