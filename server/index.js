@@ -11,9 +11,10 @@ const app = express();
 app.use(cors({
   origin: [
     "https://ghostnet-pro.web.app",
-    "http://localhost:5500" // optional
+    "https://ghostnet-pro.firebaseapp.com"
   ]
 }));
+
 
 app.use(express.json({ limit: "1mb" }));
 
