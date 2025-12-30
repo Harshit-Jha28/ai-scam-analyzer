@@ -6,8 +6,6 @@ Built to demonstrate real-world skills in full-stack development, cloud deployme
 
 🔗 Live App: https://ghostnet-pro.web.app
 
-🔗 Backend API: https://ai-scam-analyzer.onrender.com
-
 End-to-end full-stack ownership
 Secure API design (no exposed AI keys)
 Cloud deployment (Firebase + Render)
@@ -63,6 +61,10 @@ Hosted on Render
 
 dotenv, CORS, node-fetch
 
+
+Automatically analyzes messages in:
+Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Urdu, English
+
 This project was built end-to-end independently, including design, backend security, AI integration, and deployment.
 It reflects real-world engineering practices rather than academic prototypes.
 
@@ -74,5 +76,3 @@ GitHub: https://github.com/Harshit-Jha2
 
 
 
-Automatically analyzes messages in:
-Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Urdu, English
