@@ -18,7 +18,7 @@ import {
   limit
 } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
-/* ================= FIREBASE ================= */
+/*FIREBASE*/
 const firebaseConfig = {
   apiKey: "AIzaSyCe41LBbohagUPC47BmIeCWQQpkJXpT1Ik",
   authDomain: "ghostnet-pro.firebaseapp.com",
@@ -33,7 +33,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-/* ================= DOM ELEMENTS ================= */
+/* DOM ELEMENTS */
 const loginBtn = document.getElementById("login-btn");
 const logoutBtn = document.getElementById("logout-btn");
 const userInfo = document.getElementById("user-info");
@@ -46,22 +46,19 @@ const themeToggle = document.getElementById("theme-toggle");
 console.log("userInfo:", userInfo);
 console.log("themeToggle:", themeToggle);
 
-/* ================= THEME LOGIC ================= */
+/*THEME LOGIC */
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
 
-  // Safety check: Ensure button exists before changing text
   if (themeToggle) {
     themeToggle.textContent = theme === "light" ? "🌙 Dark Mode" : "🌞 Light Mode";
   }
 }
 
-// Load saved theme
 const savedTheme = localStorage.getItem("theme") || "dark";
 applyTheme(savedTheme);
 
-// Toggle Event Listener
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
     const current = document.documentElement.getAttribute("data-theme");
@@ -69,7 +66,7 @@ if (themeToggle) {
   });
 }
 
-/* ================= AUTH ================= */
+/*  AUTH  */
 if (loginBtn) {
   loginBtn.onclick = async () => {
     try { await signInWithPopup(auth, provider); }
@@ -108,13 +105,13 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
-/* ================= HISTORY ================= */
-let unsubscribeHistory = null; // To stop listening when logged out
+/* HISTORY */
+let unsubscribeHistory = null; 
 
 function startRealtimeHistory() {
   if (!auth.currentUser) return;
 
-  // Unsubscribe previous listener if exists
+
   if (unsubscribeHistory) unsubscribeHistory();
 
   const q = query(
@@ -144,13 +141,12 @@ function startRealtimeHistory() {
     });
   });
 }
-/* ================= ANALYZE LOGIC ================= */
+/* ANALYZE LOGIC */
 if (analyzeBtn) {
   analyzeBtn.onclick = async () => {
-    // 1. CLEAR PREVIOUS ERRORS
+
     errorDiv.textContent = "";
 
-    // 2. CHECK LOGIN STATUS (CRITICAL FIX)
     if (!auth.currentUser) {
       errorDiv.textContent = "⚠️ You must be signed in to analyze messages.";
       return;
@@ -195,9 +191,9 @@ if (analyzeBtn) {
       let parsed = JSON.parse(cleaned);
       if (parsed.probability <= 1) parsed.probability = Math.round(parsed.probability * 100);
 
-      // SAVE TO DB
+  
       await addDoc(collection(db, "scans"), {
-        userId: auth.currentUser.uid, // This is safe now because we checked login above
+        userId: auth.currentUser.uid, 
         message: txt,
         probability: parsed.probability,
         type: parsed.type,
@@ -206,7 +202,7 @@ if (analyzeBtn) {
         createdAt: serverTimestamp()
       });
 
-      // UI UPDATE
+   
       let badgeClass = parsed.probability < 30 ? "badge badge-safe" : parsed.probability < 70 ? "badge badge-warning" : "badge badge-danger";
       let riskColor = parsed.probability < 30 ? "var(--safe)" : parsed.probability < 70 ? "var(--warning)" : "var(--danger)";
 
