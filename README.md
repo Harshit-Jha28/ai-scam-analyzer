@@ -1,14 +1,13 @@
-GhostNet AI — Real-Time Scam & Fraud Detection Platform
+GhostNet — Real-Time Scam & Fraud Detection Platform
 
-GhostNet AI is a production-ready, full-stack web application that detects scam messages and phishing URLs using Google Gemini AI, with a secure backend architecture and real-time user history tracking.
+GhostNet is a production-ready, full-stack web application that detects scam messages and phishing URLs using Google Gemini AI, with a secure backend architecture and real-time user history tracking.
 
 Built to demonstrate real-world skills in full-stack development, cloud deployment, AI integration, security, and scalable architecture.
 
 🔗 Live App: https://ghostnet-pro.web.app
 
 End-to-end full-stack ownership
-Secure API design (no exposed AI keys)
-Cloud deployment (Firebase + Render)
+Secure API design Cloud deployment (Firebase + Render)
 Real-time databases & authentication
 AI integration with prompt engineering
 Clean UI + UX with theming & accessibility
@@ -41,9 +40,7 @@ Multilingual Support
 Tech Stack
 Frontend
 
-HTML, CSS (Glassmorphism UI)
-
-Vanilla JavaScript
+HTML, CSS, JavaScript
 
 Firebase Hosting
 
@@ -59,14 +56,11 @@ Google Gemini API
 
 Hosted on Render
 
-dotenv, CORS, node-fetch
-
 
 Automatically analyzes messages in:
 Hindi, Bengali, Tamil, Telugu, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Urdu, English
 
 This project was built end-to-end independently, including design, backend security, AI integration, and deployment.
-It reflects real-world engineering practices rather than academic prototypes.
 
 Author
 
