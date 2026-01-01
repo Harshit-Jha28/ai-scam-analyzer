@@ -18,7 +18,6 @@ import {
   limit
 } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js";
 
-/*FIREBASE*/
 const firebaseConfig = {
   apiKey: "AIzaSyCe41LBbohagUPC47BmIeCWQQpkJXpT1Ik",
   authDomain: "ghostnet-pro.firebaseapp.com",
@@ -33,7 +32,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-/* DOM ELEMENTS */
 const loginBtn = document.getElementById("login-btn");
 const logoutBtn = document.getElementById("logout-btn");
 const userInfo = document.getElementById("user-info");
@@ -46,13 +44,12 @@ const themeToggle = document.getElementById("theme-toggle");
 console.log("userInfo:", userInfo);
 console.log("themeToggle:", themeToggle);
 
-/*THEME LOGIC */
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
 
   if (themeToggle) {
-    themeToggle.textContent = theme === "light" ? "🌙 Dark Mode" : "🌞 Light Mode";
+    themeToggle.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
   }
 }
 
@@ -66,7 +63,6 @@ if (themeToggle) {
   });
 }
 
-/*  AUTH  */
 if (loginBtn) {
   loginBtn.onclick = async () => {
     try { await signInWithPopup(auth, provider); }
@@ -104,8 +100,6 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-
-/* HISTORY */
 let unsubscribeHistory = null; 
 
 function startRealtimeHistory() {
@@ -141,14 +135,13 @@ function startRealtimeHistory() {
     });
   });
 }
-/* ANALYZE LOGIC */
 if (analyzeBtn) {
   analyzeBtn.onclick = async () => {
 
     errorDiv.textContent = "";
 
     if (!auth.currentUser) {
-      errorDiv.textContent = "⚠️ You must be signed in to analyze messages.";
+      errorDiv.textContent = "You must be signed in to analyze messages.";
       return;
     }
 
@@ -218,7 +211,7 @@ if (analyzeBtn) {
 
     } catch (err) {
       console.error(err);
-      resultBox.innerHTML = "⚠️ Analysis failed. Please try again.";
+      resultBox.innerHTML = "Analysis failed. Please try again.";
     }
   };
 }
