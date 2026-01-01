@@ -66,11 +66,11 @@ app.post("/analyze", async (req, res) => {
     res.json(data);
 
   } catch (err) {
-    console.error("❌ AI request failed:", err.message);
+    console.error("AI request failed:", err.message);
     res.status(500).json({ error: "AI request failed" });
   }
 });
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Backend running on port ${PORT}`);
+  console.log(`Backend running on port ${PORT}`);
 });
