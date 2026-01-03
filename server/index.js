@@ -4,11 +4,11 @@ import dotenv from "dotenv";
 import fetch from "node-fetch";
 import cheerio from "cheerio";
 
-
 dotenv.config();
 
 const app = express();
 
+/* ================= MIDDLEWARE ================= */
 app.use(cors({
   origin: [
     "https://ghostnet-pro.web.app",
@@ -16,28 +16,29 @@ app.use(cors({
   ]
 }));
 
-
 app.use(express.json({ limit: "1mb" }));
 
+/* ================= ENV ================= */
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-console.log("GEMINI_API_KEY loaded:", !!GEMINI_API_KEY);
+console.log("🔑 GEMINI_API_KEY loaded:", !!GEMINI_API_KEY);
 
-
+/* ================= HEALTH ================= */
 app.get("/", (req, res) => {
-  res.json({ status: "GhostNet backend alive" });
+  res.json({ status: "GhostNet backend alive 🚀" });
 });
-function isURL(text) {
-  return /^(https?:\/\/)/i.test(text.trim());
+
+/* ================= HELPERS ================= */
+function extractURL(text) {
+  const match = text.match(/https?:\/\/[^\s"]+/i);
+  return match ? match[0] : null;
 }
 
 async function extractWebsiteContent(url) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10000); // 10s
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
   const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Mozilla/5.0 GhostNet-Scanner"
-    },
+    headers: { "User-Agent": "Mozilla/5.0 GhostNet-Scanner" },
     signal: controller.signal
   });
 
@@ -45,7 +46,7 @@ async function extractWebsiteContent(url) {
 
   const contentType = response.headers.get("content-type") || "";
   if (!contentType.includes("text/html")) {
-    throw new Error("URL does not return HTML content");
+    throw new Error("URL does not return HTML");
   }
 
   const html = await response.text();
@@ -63,17 +64,15 @@ async function extractWebsiteContent(url) {
     .trim()
     .slice(0, 3000);
 
-  const forms = $("form").length;
-  const passwordFields = $("input[type='password']").length;
-
   return {
     title,
     visibleText,
-    forms,
-    passwordFields
+    forms: $("form").length,
+    passwordFields: $("input[type='password']").length
   };
 }
 
+/* ================= ANALYZE ================= */
 app.post("/analyze", async (req, res) => {
   const { prompt } = req.body;
 
@@ -82,59 +81,67 @@ app.post("/analyze", async (req, res) => {
   }
 
   try {
-    let finalPrompt = "";
+    const url = extractURL(prompt);
+    let site = null;
 
-    // 🟢 CASE 1: URL ANALYSIS (CONTENT-BASED)
-    if (isURL(prompt)) {
-      const site = await extractWebsiteContent(prompt);
+    if (url) {
+      site = await extractWebsiteContent(url);
+    }
 
-      finalPrompt = `
-You are a cybersecurity expert.
+    let finalPrompt = `
+You are a cybersecurity fraud detection expert.
 
-Analyze the WEBSITE CONTENT below and determine if it is malicious.
+Analyze the FULL MESSAGE below.
+If a website is present, ALSO analyze the website content.
 
-Website Title:
-"${site.title}"
+IMPORTANT RULES:
+- Do NOT mark a website as scam only because it uses Firebase, Vercel, or Netlify
+- Judge intent using urgency, impersonation, credential requests, threats
+- Informational, portfolio, demo, or personal sites should be SAFE
+- Website analysis should SUPPORT message analysis, not override it
+
+FULL MESSAGE:
+"${prompt}"
+`;
+
+    if (site) {
+      finalPrompt += `
+
+WEBSITE CONTENT ANALYSIS:
+
+Website URL: ${url}
+Title: "${site.title}"
 
 Indicators:
-- Number of forms: ${site.forms}
-- Password fields present: ${site.passwordFields}
+- Forms present: ${site.forms}
+- Password fields: ${site.passwordFields}
 
 Visible text excerpt:
 "${site.visibleText}"
 
-Return ONLY valid minified JSON:
-{
-  "probability": number,
-  "type": "Phishing | Fake Login | Malware | Impersonation | Safe | Other",
-  "explanation": "clear explanation based on content",
-  "detectedLanguage": "language name"
-}
+SAFE INDICATORS:
+- No OTP/password/payment requests
+- No impersonation of banks/government
+- No urgent threats or account suspension warnings
+- Educational, portfolio, or demo content
+
+If website is informational or harmless, probability MUST be below 30.
 `;
     }
 
-    // 🟢 CASE 2: MESSAGE ANALYSIS (UNCHANGED)
-    else {
-      finalPrompt = `
-You are a cybersecurity fraud detection expert.
-The message may be in any Indian language.
+    finalPrompt += `
 
 Return ONLY valid minified JSON:
 {
   "probability": number,
   "type": "OTP Scam | UPI Scam | Job Scam | Lottery Scam | Phishing | Safe | Other",
-  "explanation": "short explanation in English",
+  "explanation": "clear explanation combining message + website",
   "detectedLanguage": "language name"
 }
-
-Message:
-"${prompt}"
 `;
-    }
 
-    // 🔥 CALL GEMINI
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -148,7 +155,7 @@ Message:
     res.json(data);
 
   } catch (err) {
-    console.error("❌ AI request failed:", err.message);
+    console.error("❌ Analysis failed:", err.message);
     res.status(500).json({ error: "AI request failed" });
   }
 });
@@ -156,5 +163,5 @@ Message:
 /* ================= SERVER ================= */
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Backend running on port ${PORT}`);
+  console.log(`🚀 Backend running on port ${PORT}`);
 });
